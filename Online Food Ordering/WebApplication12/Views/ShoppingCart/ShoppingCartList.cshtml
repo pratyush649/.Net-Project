@@ -1,0 +1,158 @@
+﻿@model WebApplication12.Models.ViewModel.ShoppingCartViewModel
+
+@{
+    ViewBag.Title = "ShoppingCartList";
+    Layout = "~/Views/Shared/_LayoutUI.cshtml";
+}
+
+<script src="/Scripts/jquery-1.4.4.min.js"></script>
+<script>
+
+    $(function () {
+        $(".RemoveLink").click(function () {
+            var recordToDelete = $(this).attr("data-id");
+            if (recordToDelete != '') {
+                $.post("/ShoppingCart/RemoveFromCart", { "id": recordToDelete },
+                    function (data) {
+                        
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.DeleteId).fadeOut('slow');
+                        } else {
+                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                        }
+                        $('#cart-total').text(data.CartTotal);
+                        $('#update-message').text(data.Message);
+                        $('#cart-status').text('Cart (' + data.CartCount + ')');
+                    });
+            }
+        });
+        $(".RefreshQuantity").click(function () {
+            var recordToUpdate = $(this).attr("data-id");
+            var countToUpdate = 0;
+            if ($("#" + $(this).attr("txt-id")).val().trim() !== '') {
+                countToUpdate = $("#" + $(this).attr("txt-id")).val();
+            }
+            if (recordToUpdate != '') {
+                clearUpdateMessage();
+                $.post("/ShoppingCart/UpdateCartCount", { "id": recordToUpdate, "cartCount": countToUpdate },
+                    function (data) {
+                        if (data.ItemCount == 0) {
+                            $('#row-' + data.DeleteId).fadeOut('slow');
+                        }
+                        $('#update-message').text(htmlDecode(data.Message));
+                        if (data.ItemCount != -1) {
+                            $('#cart-total').text(data.CartTotal);
+                            $('#cart-status').text('Cart (' + data.CartCount + ')');
+                        }
+                    });
+            }
+        });
+    });
+
+    function clearUpdateMessage() {
+        $('#update-message').text('');
+    }
+    function htmlDecode(value) {
+        if (value) {
+            return $('<div />').html(value).text();
+        }
+        else {
+            return '';
+        }
+    }
+    if (typeof String.prototype.trim !== 'function') {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, '');
+        }
+    }
+
+</script>
+<div class="banner-top">
+    <div class="container">
+        <h3>View Cart</h3>
+        <h4><a href="@Url.Action("Index", "Home")">Home</a><label>/</label>Cart Items</h4>
+
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+<div class="content-top ">
+    <div class="container ">
+        <div class="spec ">
+            <h3>Cart Items</h3>
+            <div class="ser-t">
+                <b></b>
+                <span><i></i></span>
+                <b class="line"></b>
+            </div>
+        </div>
+        <div class="tab-head ">
+
+            <div class=" tab-content tab-content-t ">
+                <div class="tab-pane active text-style" id="tab1">
+                    <div class=" con-w3l">
+                        <div class="table">
+                            <p class="button">
+                                @Html.ActionLink("Checkout>>", "AddressAndPayment", "ShoppingCart", null, new { @class = "btn btn-info" })
+                            </p>
+
+                        </div>
+                        
+                        <div id="update-message">
+                        </div>  
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Product Name
+                                </th>
+                                <th>
+                                    Price (each)
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th></th>
+                            </tr>
+                            @foreach (var item in Model.cartItem)
+                            {
+                                <tr id="row-@item.recordID">
+                                    <td>
+                                        @Html.ActionLink(item.tbl_Product.title,
+                        "Details", "Store", new { id = item.productID }, null)
+                                    </td>
+                                    <td>
+                                        @item.tbl_Product.sellingPrice
+                                    </td>
+                                    <td id="item-count-@item.recordID">
+                                        @item.count
+                                    </td>
+                                    <td>
+                                        <a href="#" class="RemoveLink btn btn-info"
+                                           data-id="@item.recordID">
+                                            Remove
+
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td>
+                                    Total
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td id="cart-total">
+                                    @Model.cartTotal
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e7a8cad5ea7b4e84857d2ed2d45aee33" Name="Diagram1" ZoomLevel="59">
+        <EntityTypeShape EntityType="WebDBModel.tbl_Role" Width="1.5" PointX="5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_User" Width="1.5" PointX="5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_UserRole" Width="1.5" PointX="7.25" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="WebDBModel.FK_tbl_UserRole_tbl_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="WebDBModel.FK_tbl_UserRole_tbl_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_User1" Width="1.5" PointX="9.625" PointY="3.625" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_Cart" Width="1.5" PointX="13.75" PointY="4.5" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_Category" Width="1.5" PointX="7.75" PointY="7.5" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_Order" Width="1.5" PointX="9.75" PointY="10.875" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_OrderDetail" Width="1.5" PointX="16.375" PointY="10.75" />
+        <AssociationConnector Association="WebDBModel.FK_tbl_OrderDetail_tbl_Order" />
+        <EntityTypeShape EntityType="WebDBModel.tbl_Product" Width="1.5" PointX="10" PointY="6.75" />
+        <AssociationConnector Association="WebDBModel.FK_tbl_Cart_tbl_Product" />
+        <AssociationConnector Association="WebDBModel.FK_tbl_Product_tbl_Category" />
+        <AssociationConnector Association="WebDBModel.FK_tbl_OrderDetail_tbl_Product" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
